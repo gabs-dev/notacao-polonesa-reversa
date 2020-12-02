@@ -6,15 +6,18 @@ import java.util.Scanner;
 
 public class MainView {
 
+    String operators = "+-*/^";
+
     public void init() {
         Scanner input = new Scanner(System.in);
 
         String[] tests = {"a+b*(c^d-e)^(f+g*h)-i", "A+B", "A+B-C", "(A+B)*(C-D)", "A^B*C-D+E/F/(G+H)",
-            "((A+B)*C-(D-E))^(F+G)", "A-B/(C*D^E)", "3+5*14/(4+3)"};
+            "((A+B)*C-(D-E))^(F+G)", "A-B/(C*D^E)", "3+5*14/(4+3)", "3+5*C/(4+3)"};
 
         for (String s : tests) {
             System.out.println("Forma infixa: " + s);
-            System.out.println("Forma pós-fixa: " + reversePolishNotation(s) + "\n");
+            System.out.println("Forma pós-fixa: " + reversePolishNotation(s) /**+ "\n"**/);
+            System.out.println("É apenas números? " + isJustNumbers(reversePolishNotation(s)) + "\n");
         }
 
 //        System.out.print("Informe a expressão: ");
@@ -71,6 +74,24 @@ public class MainView {
                 return 3;
         }
         return -1;
+    }
+
+    private boolean isJustNumbers(String expression) {
+        if (expression == null || expression.equals(""))
+            throw new NullPointerException("Foi passado um parâmetro nulo ou vazio.");
+        String regex = "\\+|\\*|\\-|\\/|\\^|\\(|\\)";
+        String[] vector = expression.split(regex);
+        for (String s : vector) {
+            if (isDigit(s))
+                continue;
+            else
+                return false;
+        }
+        return true;
+    }
+
+    private boolean isDigit(String s) {
+        return s.matches("[0-9]*");
     }
 
 }
